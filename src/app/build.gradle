@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id "com.google.protobuf" version "0.8.17" // Apply protobuf plugin
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // Your existing dependencies
+    implementation 'com.google.protobuf:protobuf-java:3.18.1'
+    implementation 'io.grpc:grpc-netty:1.43.0'
+    implementation 'io.grpc:grpc-protobuf:1.43.0'
+    implementation 'io.grpc:grpc-stub:1.43.0'
+    
+    // Add JUnit Jupiter dependency
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.18.1'
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option 'lite'
+                }
+            }
+        }
+    }
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation' << '-Xlint:-options' // Suppress obsolete options warnings
+}
